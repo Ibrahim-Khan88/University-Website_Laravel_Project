@@ -102,6 +102,7 @@ class NoticeBoardController extends Controller
     {
 
         //return $request->userId;
+        $output = new ConsoleOutput();
 
         if ($request->category_name != null) {
 
@@ -124,6 +125,9 @@ class NoticeBoardController extends Controller
         } else {
             $roles = User::find($request->userId)->roles()->where('name', $request->community_name)->first();
             $communityId = Community::where('name', $request->community_name)->select("id")->first();
+
+            $output->writeln($roles);
+            $output->writeln($request->community_name);
 
             //return $roles;
             if ($roles != null) {

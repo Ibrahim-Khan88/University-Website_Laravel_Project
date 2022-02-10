@@ -22,7 +22,7 @@ class RoleSeeder extends Seeder
                 "name" => "Computer Science and Engineering"
             ],
             [
-                "name" => "Electrical and Electronic Engineerin"
+                "name" => "Electrical and Electronic Engineering"
             ],
             [
                 "name" => "Applied Chemistry and Chemical Engineering"

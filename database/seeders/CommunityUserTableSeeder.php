@@ -80,6 +80,16 @@ class CommunityUserTableSeeder extends Seeder
                 "community_id" => 10,
                 "user_id" => 5,
                 "role" => "Senior Medical Officer"
+            ],
+            [
+                "community_id" => 13,
+                "user_id" => 8,
+                "role" => "Member"
+            ],
+            [
+                "community_id" => 14,
+                "user_id" => 9,
+                "role" => "Member"
             ]
         ]);  
     }
