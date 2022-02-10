@@ -27,23 +27,31 @@ class AuthConroller extends Controller
             ], 401);
         }
 
-        $accessGroupList = $this -> loginService -> checkRole($request -> email);
+        //return "slkfs";
+
+        $user = $this -> loginService -> findUser($request -> email);
+       // return $user;
+        $accessGroupList = $this -> loginService -> checkRole($user);
         // $responseObject = new stdClass();
         // for ($i = 0; $i < count($accessGroupList); $i++){
 
         //     $responseObject -> accessGroupList[$i] = true;
         // }
         // return $responseObject;
+       // return $accessGroupList;
 
-        return $this->createNewToken($token, $accessGroupList);
+        return $this->createNewToken($token, $user, $accessGroupList);
     }
 
     
 
-    public function createNewToken($token, $accessGroupList){
+    public function createNewToken($token, $user, $accessGroupList){
         return response() -> json([
             'jwt' => $token,
-            'accessGroup' => $accessGroupList
+            // 'userName' => $user -> name,
+            // 'userPhoto' => $user -> photo,
+            'user' => $user,
+            'accessCommunity' => $accessGroupList
         ]);
     }
 

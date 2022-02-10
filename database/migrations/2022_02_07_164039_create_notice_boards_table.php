@@ -15,13 +15,15 @@ class CreateNoticeBoardsTable extends Migration
     {
         Schema::create('notice_boards', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('body');
-            $table->bigInteger("user_id")->unsigned();
-            $table->bigInteger("group_id")->unsigned();
+            $table->text('title');
+            $table->text('body');
+            $table->bigInteger("user_id")->nullable()->unsigned();
+            $table->bigInteger("category_id")->nullable()->unsigned();
+            $table->bigInteger("community_id")->nullable()->unsigned();
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
-            $table->foreign("group_id")->references("id")->on("groups")->onDelete("cascade");
+            $table->foreign("category_id")->references("id")->on("categories")->onDelete("cascade");
+            $table->foreign("community_id")->references("id")->on("communities")->onDelete("cascade");
         });
     }
 

@@ -12,6 +12,8 @@ use App\Http\Controllers\UsersRegistrationRequestController;
 use App\Http\Controllers\NoticeBoardController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\CommunityController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,22 +44,39 @@ Route::group([
     Route::get("/fetch-phone/{id}", [AuthorController::class, 'fetchPhoneByAuthor']);
     Route::get("/fetch-comment/{id}", [PostController::class, 'getCommentByPost']);
 
+   
+
 });
 
+Route::get("fetch/community/user/{id}", [CommunityController::class, 'fetchConnectedCommunityOfUserByUserId']);
+Route::get("fetch/community", [CommunityController::class, 'fetchCommunityName']);
+Route::get("fetch/user/community/{name}", [CommunityController::class, 'fetchUserByCommunityId']);
+Route::post("add/user/community", [CommunityController::class, 'addMember']);
+Route::delete("delete/user/{userId}/community/{communityName}/memberId/{memberId}", [CommunityController::class, 'removeMember']);
 
-Route::get("fetch/user/registration-request", [UsersRegistrationRequestController::class, 'fetchUsersRegistrationRequest']);
+
+Route::get("fetch/role/user/{id}", [UsersRegistrationRequestController::class, 'fetchRoleByUserId']);
+Route::get("fetch/user/{id}", [UsersRegistrationRequestController::class, 'fetchUsersById']);
+
+Route::get("fetch/user/registration-request/{id}", [UsersRegistrationRequestController::class, 'fetchUsersRegistrationRequest']);
 Route::post("user/registration-request", [UsersRegistrationRequestController::class, 'saveUsersRegistrationRequest']);
-Route::post("user/registration-request/assign", [UsersRegistrationRequestController::class, 'usersRegistrationRequestAssign']);
+Route::post("user/registration-request/response", [UsersRegistrationRequestController::class, 'usersRegistrationRequestResponse']);
+Route::get("fetch/user", [UsersRegistrationRequestController::class, 'fetchAllUsers']);
+Route::post("user/{userId}", [UsersRegistrationRequestController::class, 'updateUserById']);
 
 
-Route::post("/save/notice/user/{id}", [NoticeBoardController::class, 'insertNotice']);
-Route::get("/fetch/notice/user/{id}", [NoticeBoardController::class, 'fetchNotice']); 
+Route::get("/fetch/dept", [DepartmentController::class, 'fetchDept']); 
+
+Route::post("/save/notice/user/{userId}", [NoticeBoardController::class, 'insertNotice']);
+Route::get("/fetch/notice/user/{userId}", [NoticeBoardController::class, 'fetchNoticeByUserId']); 
 
 Route::post("/save/achievement", [AchievementController::class, 'saveAchievement']);
 
 Route::get("/fetch/achievement/department/{name}", [AchievementController::class, 'fetchAchievementBydepartment']); 
 Route::get("/fetch/teacher/department/{name}", [TeacherController::class, 'fetchTeacherByDepartment']); 
 Route::get("/fetch/room/department/{name}", [RoomController::class, 'fetchRoomByDepartment']); 
+
+Route::get("/fetch/room", [RoomController::class, 'fetchRoom']); 
 
 Route::get("/fetch/groupmember/groupname/{name}", [GroupController::class, 'fetchGroupMemberByGroupName']); 
 

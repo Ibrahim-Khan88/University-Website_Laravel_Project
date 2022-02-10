@@ -21,16 +21,12 @@ class AcademicCouncilTableSeeder extends Seeder
             ],
             [
                 "role" => "Member",
+                "user_id" => "2"
+            ],
+            [
+                "role" => "Member",
                 "user_id" => "3"
-            ],
-            [
-                "role" => "Member",
-                "user_id" => "9"
-            ],
-            [
-                "role" => "Member",
-                "user_id" => "10"
-            ],
+            ]
         ]);
     }
 }

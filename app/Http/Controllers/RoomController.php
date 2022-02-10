@@ -21,4 +21,16 @@ class RoomController extends Controller
         
       }
 
+
+      public function fetchRoom()
+      {
+          $room = Room::all();
+          $roomName = array();
+  
+          for($i = 0; $i < count($room); $i++){
+              $roomName[$i] = $room[$i] -> roomNumber;
+          }
+          return $roomName;
+      } 
+
 }

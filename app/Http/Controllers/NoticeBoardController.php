@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicCouncil;
+use App\Models\Category;
+use App\Models\Community;
 use App\Models\Faculty;
 use App\Models\Group;
 use App\Models\NoticeBoard;
 use App\Models\RejectBoard;
 use App\Models\SheikhRasalHall;
+use App\Models\TemporaryObject;
 use App\Models\User;
 use App\Modules\LoginService\LoginService;
 use App\Modules\NoticeBoard\NoticeBoardService;
+use DateTime;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Constraint\Count;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class NoticeBoardController extends Controller
@@ -19,110 +24,123 @@ class NoticeBoardController extends Controller
 
     private $noticeBoardService;
     private $loginService;
-    
-    public function __construct(){
-        $this -> noticeBoardService = new NoticeBoardService();
-        $this -> loginService = new LoginService();
+
+    public function __construct()
+    {
+        $this->noticeBoardService = new NoticeBoardService();
+        $this->loginService = new LoginService();
     }
 
-    public function fetchNotice($id){
-  
+    public function fetchNoticeByUserId($userId)
+    {
+
+        $connectedCommunityId = User::find($userId)->communities()->select("community_id")->get();
+        $allNotices = [];
         $output = new ConsoleOutput();
-        $connectedModelList = $this -> noticeBoardService -> connectedModelListById($id);
-
-        // $result = AcademicCouncil::select("*")->where("user_id", "=", $id)->get();
-        // return $result;
         
 
-        for($i = 0; $i < count($connectedModelList); $i++){
+        for ($i = 0; $i < count($connectedCommunityId); $i++) {
+            $temp = Community::find($connectedCommunityId[$i]->community_id)->noticeBoards()->with(['user'])->get();
 
-            // $temp = explode('\\', $connectedModelList[$i]);
-            // $groupName = preg_replace('/(?<!\ )[A-Z]/', ' $0', $temp[count($temp)-1]);
-            // $groupName = ltrim($groupName, $groupName[0]);
+            for ($j = 0; $j < count($temp); $j++) {
 
-            $groupName = $this -> noticeBoardService -> splitGroupName($connectedModelList[$i]);
-
-            $tempObject = $this -> noticeBoardService ->fetchNoticeByGroupName($groupName);
-            for($j = 0; $j < count($tempObject); $j++){
-
-                $user = User::find($tempObject[$j] -> user_id);
-                $tempObject[$j] -> postUserName = $user -> name;
-                $tempObject[$j] -> groupName = $groupName;
-                $tempObject[$j] -> postUserPhoto = $user -> photo;
-                $allPost[] = $tempObject[$j];
+                $allNotices[] = $this -> noticeBoardConvert($temp[$j]);
+                
             }
-            
         }
 
-        $user = User::find($id);
-        if(!empty($user -> department_id)){
+      //  return  $allNotices;
 
-            $tempObject = $this -> noticeBoardService ->fetchNoticeByGroupName($user -> department -> name);
-            for($j = 0; $j < count($tempObject); $j++){
-                $user = User::find($tempObject[$j] -> user_id);
-                $tempObject[$j] -> postUserName = $user -> name;
-                $tempObject[$j] -> groupName = $user -> department -> name;
-                $tempObject[$j] -> postUserPhoto = $user -> photo;
-                $allPost[] = $tempObject[$j];
-             }
 
-            $tempObject = $this -> noticeBoardService ->fetchNoticeByGroupName($user -> department -> faculty -> name);
-            for($j = 0; $j < count($tempObject); $j++){
-                $user = User::find($tempObject[$j] -> user_id);
-                $tempObject[$j] -> postUserName = $user -> name;
-                $tempObject[$j] -> groupName = $user -> department -> faculty -> name;
-                $tempObject[$j] -> postUserPhoto = $user -> photo;
-                $allPost[] = $tempObject[$j];
-            }
 
+        $categoryId = User::find($userId)->category()->select("id")->first();
+        $temp = Category::find($categoryId->id)->noticeBoards()->with(['user'])->get();
+
+        for ($j = 0; $j < count($temp); $j++) {
+            $allNotices[] = $this -> noticeBoardConvert($temp[$j]);
         }
-        else $output->writeln("else");
 
-        usort($allPost,function($first,$second){
-            return $first->id < $second->id;
-        });
 
-        return $allPost;
+        $temp = Category::where("name", "All")->first()->noticeBoards()->with(['user'])->get();
+
+        for ($j = 0; $j < count($temp); $j++) {
+            $allNotices[] = $this -> noticeBoardConvert($temp[$j]);
+        }
+
+        if (Count($allNotices) > 0) {
+            usort($allNotices, function ($first, $second) {
+                return $first->id < $second->id;
+            });
+            return  $allNotices;
+        }
+        return [];
 
     }
 
-    public function insertNotice(Request $request, $id){
 
-        $noticeBoard = new NoticeBoard();
-        $noticeBoard -> title = $request -> title;
-        $noticeBoard -> body = $request -> body;
+    public function noticeBoardConvert($temp){
 
-        $user = User::find($id);
-        $groupName = $request -> group_name;
-        $checkRole = false;
+        $output = new ConsoleOutput();
+        $date = strtotime($temp -> created_at);
+        $new_date = date('d-m-Y', $date);
 
-        // Checking if groupName is  department or faculty
-        if(!strcmp($groupName,"department")){
-            $groupName = $user -> department -> name;
-            $checkRole = true;
-        }
-        else if(!strcmp($groupName,"faculty")){
-            $groupName = $user -> department -> faculty -> name;
-            $checkRole = true;
-        }
+        $tt = new TemporaryObject();
+        $tt -> id = $temp -> id;
+        $tt -> title = $temp -> title;
+        $tt -> body = $temp -> body;
+        $tt -> createdAt = $new_date;
+        $tt -> userName = $temp->user->name;
+        $tt -> userPhoto = $this->loginService->convertImage($temp->user->photo);
 
-        // checking role
-        if(!$checkRole){
-            $result =  $this -> noticeBoardService -> checkRole($id, $groupName);
+       
+     
+        $output->writeln($new_date);
+        return $tt;
+    }
 
-            if(count($result) == 0){
-                return response('Unauthorized', 401);
+    public function insertNotice(Request $request, $userId)
+    {
+
+        //return $request->userId;
+
+        if ($request->category_name != null) {
+
+            $categoryId = Category::where('name', $request->category_name)->select("id")->first();
+
+            if ($categoryId->id != null) {
+
+                $noticeBoard = new NoticeBoard();
+                $noticeBoard->title = $request->title;
+                $noticeBoard->body = $request->body;
+                $noticeBoard->category_id = $categoryId->id;
+                $noticeBoard->user_id = $userId;
+                $noticeBoard->community_id = null;
+
+                if ($noticeBoard->save() == 1) {
+                    return "Save successfully.";
+                }
             }
-        }
+            return response('Not Found', 404);
+        } else {
+            $roles = User::find($request->userId)->roles()->where('name', $request->community_name)->first();
+            $communityId = Community::where('name', $request->community_name)->select("id")->first();
 
-       // finding group
-        $group = Group::select("*")->where("name", "=", $groupName)->get();
-        
-        $noticeBoard->user()->associate($user);
-        $noticeBoard->group()->associate($group[0]);
+            //return $roles;
+            if ($roles != null) {
 
-        if($noticeBoard -> save() == 1){
-            return "Save successfully.";
+                $noticeBoard = new NoticeBoard();
+                $noticeBoard->title = $request->title;
+                $noticeBoard->body = $request->body;
+                $noticeBoard->category_id = null;
+                $noticeBoard->user_id = $userId;
+                $noticeBoard->community_id = $communityId->id;
+
+                if ($noticeBoard->save() == 1) {
+                    return "Save successfully.";
+                }
+            }
+
+            return response('Not Found', 404);
         }
     }
 }

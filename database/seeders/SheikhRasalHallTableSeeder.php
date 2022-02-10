@@ -17,15 +17,15 @@ class SheikhRasalHallTableSeeder extends Seeder
         DB::table('sheikh_rasal_halls')->insert([
             [
                 "role" => "Provost",
-                "user_id" => "12"
+                "user_id" => "1"
             ],
             [
                 "role" => "Member",
-                "user_id" => "11"
+                "user_id" => "2"
             ],
             [
                 "role" => "Member",
-                "user_id" => "13"
+                "user_id" => "3"
             ]
         ]);
     }

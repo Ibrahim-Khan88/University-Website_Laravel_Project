@@ -16,46 +16,74 @@ class NoticeBoardTableSeeder extends Seeder
     {
         DB::table('notice_boards')->insert([
             [
-                'title' => "Academic Council",
-                "body" => "Academic Council post one",
-                "user_id" => 9,
-                "group_id" => 2
-            ],
-            [
-                'title' => "Academic Council",
-                "body" => "Academic Council post 2",
-                "user_id" => 3,
-                "group_id" => 2
-            ],
-            [
-                'title' => "Academic Council",
-                "body" => "Academic Council post 3",
+                'title' => "This is notice title 1",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
                 "user_id" => 1,
-                "group_id" => 2
+                "category_id" => 2,
+                "community_id" => null,
             ],
             [
-                'title' => "Academic Council",
-                "body" => "Academic Council post 4",
-                "user_id" => 10,
-                "group_id" => 2
+                'title' => "This is notice title 2",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
+                "user_id" => 1,
+                "category_id" => 2,
+                "community_id" => null,
             ],
             [
-                'title' => "Sheikh Rasal Hall",
-                "body" => "Sheikh Rasal Hall post 1",
-                "user_id" => 11,
-                "group_id" => 3
+                'title' => "This is notice title 3",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
+                "user_id" => 1,
+                "category_id" => null,
+                "community_id" => 2,
             ],
             [
-                'title' => "Sheikh Rasal Hall",
-                "body" => "Sheikh Rasal Hall post 2",
-                "user_id" => 12,
-                "group_id" => 3
+                'title' => "This is notice title 4",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
+                "user_id" => 2,
+                "category_id" => null,
+                "community_id" => 2,
             ],
             [
-                'title' => "Sheikh Rasal Hall",
-                "body" => "Sheikh Rasal Hall post 3",
-                "user_id" => 13,
-                "group_id" => 3
+                'title' => "This is notice title 5",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
+                "user_id" => 1,
+                "category_id" => null,
+                "community_id" => 3,
+            ],
+            [
+                'title' => "This is notice title 6",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
+                "user_id" => 1,
+                "category_id" => null,
+                "community_id" => 2,
+            ],
+            [
+                'title' => "This is notice title 7",
+                "body" => "IDE example Incredible Tooling Build features quickly with simple, declarative templates. Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every
+                IDE and editor. All this comes together so you can focus on building amazing apps rather than trying to make the code work. IDE example Incredible Tooling Build features quickly with simple, declarative templates.
+                Extend the template language with your own components and use a wide array of existing components. Get immediate Angular-specific help and feedback with nearly every IDE and editor. All this comes together so
+                you can focus on building amazing apps rather than trying to make the code work.",
+                "user_id" => 1,
+                "category_id" => null,
+                "community_id" => 1,
             ],
         ]);   
     }
